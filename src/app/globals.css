@@ -1,0 +1,449 @@
+@import "tailwindcss";
+
+/* Enable class-based dark mode so className="dark" activates dark: variants */
+@variant dark (&:is(.dark, .dark *));
+
+/* ─── Design Tokens ───────────────────────────────────────── */
+:root {
+  /* Warm espresso-dark — beige/brown direction, no pink */
+  --bg:        oklch(11% 0.018 28);
+  --surface:   oklch(15% 0.018 26);
+  --surface-2: oklch(20% 0.018 24);
+  --border:    oklch(27% 0.020 24);
+  --text:      oklch(95% 0.014 70);
+  --text-2:    oklch(70% 0.022 50);
+  --text-3:    oklch(50% 0.026 42);
+  --accent:    oklch(73% 0.17 33);    /* warm coral */
+  --accent-lo: oklch(60% 0.15 32);
+  --accent-2:  oklch(72% 0.13 355);   /* soft rose-pink */
+
+  --font-display: var(--font-display-var, 'Bricolage Grotesque'), sans-serif;
+  --font-serif:   var(--font-serif-var, 'Cormorant Garamond'), serif;
+  --font-body:    var(--font-display-var, 'Bricolage Grotesque'), sans-serif;
+  --font-mono:    var(--font-mono-var, 'Red Hat Mono'), ui-monospace, monospace;
+
+  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-in-out:   cubic-bezier(0.76, 0, 0.24, 1);
+
+  /* Exact easing curves replicated from obsidianassembly.com */
+  --f-cubic:      cubic-bezier(.35, .35, 0, 1);   /* signature ease-out — hovers, colours, rolls */
+  --f-cubic-in:   cubic-bezier(.69, 0, 0, 1);     /* entrances — heading reveals */
+  --f-fast:       cubic-bezier(.2, .75, .35, 1);  /* punchy ease-out */
+  --f-smooth:     cubic-bezier(.5, 0, .3, 1);     /* smooth in-out — stone/centerpiece, images */
+  --f-smooth-alt: cubic-bezier(.6, 0, .05, 1);    /* stronger in-out */
+  --f-bounce:     cubic-bezier(.6, .5, 0, 3);     /* overshoot */
+}
+
+@theme inline {
+  --color-bg:     var(--bg);
+  --color-accent: var(--accent);
+  --color-text:   var(--text);
+}
+
+/* ─── Light register (warm paper) ─────────────────────────────
+   Flips every token on a single wrapper. Sections read from
+   these vars, so one class repaints the whole section. */
+.section-light {
+  --bg:        oklch(96% 0.03 78);      /* warm cream / ivory (microsoft.ai) */
+  --surface:   oklch(98.5% 0.02 82);    /* soft card               */
+  --surface-2: oklch(93% 0.035 72);
+  --border:    oklch(87% 0.04 66);
+  --text:      oklch(38% 0.055 48);     /* soft espresso-brown, never black */
+  --text-2:    oklch(50% 0.05 44);
+  --text-3:    oklch(60% 0.055 42);
+  --accent:    oklch(60% 0.17 28);      /* warm coral-rose for contrast on cream */
+  --accent-lo: oklch(54% 0.15 26);
+  --accent-2:  oklch(62% 0.14 350);     /* soft rose */
+  background: var(--bg);
+  color: var(--text);
+  position: relative;
+}
+
+/* ─── Reset ───────────────────────────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html {
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font-body);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  overflow-x: clip;
+  scroll-behavior: auto;
+  scrollbar-gutter: stable;
+}
+
+body {
+  background: var(--bg);
+  min-height: 100svh;
+  overflow-x: clip;
+}
+
+/* ─── Grain overlay ───────────────────────────────────────── */
+body::before {
+  content: '';
+  position: fixed;
+  inset: -100%;
+  width: 300%;
+  height: 300%;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.72' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23g)'/%3E%3C/svg%3E");
+  opacity: 0.028;
+  pointer-events: none;
+  z-index: 9990;
+  animation: grain 6s steps(1) infinite;
+}
+
+@keyframes grain {
+  0%  { transform: translate(0, 0); }
+  20% { transform: translate(-3%, 2%); }
+  40% { transform: translate(2%, -3%); }
+  60% { transform: translate(-2%, -2%); }
+  80% { transform: translate(3%, 3%); }
+  100%{ transform: translate(-1%, 1%); }
+}
+
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* ─── Focus & Selection ───────────────────────────────────── */
+:focus-visible {
+  outline: 1.5px solid var(--accent);
+  outline-offset: 3px;
+  border-radius: 2px;
+}
+
+::selection {
+  background: color-mix(in oklch, var(--accent) 22%, transparent);
+  color: var(--text);
+}
+
+/* ─── Custom cursor (desktop) ─────────────────────────────── */
+@media (pointer: fine) {
+  * { cursor: none !important; }
+}
+
+/* ─── Typography helpers ──────────────────────────────────── */
+.font-display {
+  font-family: var(--font-display);
+  font-weight: 800;
+}
+.font-serif {
+  font-family: var(--font-serif);
+  font-style: italic;
+}
+
+/* ─── Skills marquee ──────────────────────────────────────── */
+@keyframes marquee-left {
+  0%   { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+@keyframes marquee-right {
+  0%   { transform: translateX(-50%); }
+  100% { transform: translateX(0); }
+}
+.animate-marquee-left  { animation: marquee-left  35s linear infinite; }
+.animate-marquee-right { animation: marquee-right 35s linear infinite; }
+@media (prefers-reduced-motion: reduce) {
+  .animate-marquee-left, .animate-marquee-right { animation: none; }
+}
+
+/* ─── Modern sliding-fill button ──────────────────────────────
+   A second colour wipes up from below on hover; label + arrow
+   ride above it. transform/opacity only — no layout animation. */
+.btn-slide {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 1rem 2.1rem;
+  border-radius: 100px;
+  font-family: var(--font-body);
+  font-weight: 700;
+  font-size: 0.74rem;
+  letter-spacing: 0.13em;
+  text-transform: uppercase;
+  text-decoration: none;
+  overflow: hidden;
+  isolation: isolate;
+  transition: color 0.9s var(--f-cubic), border-color 0.9s var(--f-cubic);
+  will-change: transform;
+}
+.btn-slide::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  transform: translateY(101%);
+  /* obsidianassembly blob wipe: arches up rounded, then settles flat */
+  border-radius: 50% 50% 0 0;
+  transition:
+    transform 0.9s var(--f-cubic),
+    border-radius 0.9s var(--f-cubic);
+}
+.btn-slide:hover::before,
+.btn-slide:focus-visible::before {
+  transform: translateY(0);
+  border-radius: 0;
+}
+
+/* Primary: solid accent → wipes to violet, text stays light */
+.btn-primary {
+  background: var(--accent);
+  color: oklch(98% 0.01 90);
+}
+.btn-primary::before { background: var(--accent-2); }
+.btn-primary:hover { color: #fff; }
+
+/* Ghost: bordered → wipes to accent fill */
+.btn-ghost {
+  background: transparent;
+  border: 1px solid color-mix(in oklch, var(--text) 28%, transparent);
+  color: var(--text);
+}
+.btn-ghost::before { background: var(--accent); }
+.btn-ghost:hover { color: oklch(98% 0.01 90); border-color: var(--accent); }
+
+/* arrow nudge inside any .btn-slide */
+.btn-slide .btn-arrow { transition: transform 0.9s var(--f-cubic); }
+.btn-slide:hover .btn-arrow { transform: translateX(4px); }
+
+/* ─── About scene animations ──────────────────────────────── */
+@keyframes hero-fade-in   { 0% { opacity:0; translate:0 12px }  to { opacity:1; translate:0 0 } }
+@keyframes hero-slide-left{ 0% { opacity:0; translate:-40px 0 } to { opacity:1; translate:0 0 } }
+@keyframes hero-pop       { 0% { opacity:0; scale:.85 }         to { opacity:1; scale:1 } }
+@keyframes plant-bounce   { 0%,to { translate:0 0 } 50% { translate:0 -10px } }
+@keyframes coffee-wobble  {
+  0%  { transform: rotate(0deg) }   15% { transform: rotate(-5deg) }
+  30% { transform: rotate(4deg) }   45% { transform: rotate(-3deg) }
+  60% { transform: rotate(2deg) }   75% { transform: rotate(-1deg) }
+  to  { transform: rotate(0deg) }
+}
+@keyframes pencil-line-reveal {
+  0%  { clip-path: inset(0 100% 0 0) }
+  to  { clip-path: inset(0 0 0 0) }
+}
+@keyframes flower-glitch {
+  0%  { filter: none } 25% { filter: hue-rotate(15deg) brightness(1.05) }
+  50% { filter: hue-rotate(-10deg) saturate(1.2) }
+  75% { filter: hue-rotate(8deg) brightness(1.08) } to { filter: none }
+}
+@keyframes ticket-scan { 0% { left:-100% } to { left:100% } }
+@keyframes vinyl-spin  { 0% { transform: rotate(0deg) } to { transform: rotate(360deg) } }
+
+.plant-hover:hover { animation: plant-bounce 1.2s ease-in-out infinite; }
+.coffee-wobble:hover { animation: coffee-wobble .6s ease-in-out; transform-origin: bottom center; }
+.pencil-line { clip-path: inset(0 100% 0 0); }
+
+/* hero-slide-right (ticket) */
+@keyframes hero-slide-right { 0% { opacity:0; translate:40px 0 } to { opacity:1; translate:0 0 } }
+
+/* vinyl — only spins on hover */
+.vinyl-spin       { animation: none; }
+.group\/vinyl:hover .vinyl-spin,
+.vinyl-spin-active { animation: vinyl-spin 12s linear infinite; }
+
+/* badge pendulum after landing */
+@keyframes badge-swing {
+  0%,to { transform: rotate(0deg) }
+  25%   { transform: rotate(2.5deg) }
+  75%   { transform: rotate(-2.5deg) }
+}
+.badge-swing { transform-origin: top center; animation: badge-swing 3s ease-in-out infinite; }
+
+/* vinyl border rotate (conic-gradient angle) */
+@property --vinyl-angle { syntax: "<angle>"; initial-value: 0deg; inherits: false; }
+@keyframes vinyl-border-rotate { 0% { --vinyl-angle:0deg } to { --vinyl-angle:360deg } }
+
+/* vinyl color blobs on hover */
+@keyframes blob-drift-1 { 0%,to { transform:translate(0,0) }   50% { transform:translate(20px,-15px) } }
+@keyframes blob-drift-2 { 0%,to { transform:translate(0,0) }   50% { transform:translate(-15px,20px) } }
+@keyframes blob-drift-3 { 0%,to { transform:scale(1) }         50% { transform:scale(1.1) } }
+
+.vinyl-blob { position:absolute; border-radius:50%; filter:blur(40px); opacity:.8; will-change:transform; transform:translateZ(0); }
+.vinyl-blob-1 { width:200px; height:200px; background:#d4e8b0; top:-50px; left:-40px; animation:blob-drift-1 8s ease-in-out infinite; }
+.vinyl-blob-2 { width:200px; height:200px; background:#fef0a0; bottom:-50px; right:-40px; animation:blob-drift-2 8s ease-in-out infinite; }
+.vinyl-blob-3 { width:180px; height:180px; background:#b8ddb9; top:50%; left:50%; margin-top:-90px; margin-left:-90px; animation:blob-drift-3 8s ease-in-out infinite; }
+
+/* ─── Click burst particles ───────────────────────────────── */
+@keyframes burst-particle {
+  0%   { transform: translate(0) scale(0); opacity: 1; }
+  50%  { opacity: 1; transform: translate(var(--burst-x), var(--burst-y)) scale(1); }
+  100% { transform: translate(var(--burst-x), calc(var(--burst-y) - 20px)) scale(0.5); opacity: 0; }
+}
+
+/* ─── Pulse ───────────────────────────────────────────────── */
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50%       { opacity: 0.4; }
+}
+
+/* ─── Accessibility ───────────────────────────────────────── */
+.sr-only {
+  position: absolute;
+  width: 1px; height: 1px;
+  padding: 0; margin: -1px;
+  overflow: hidden;
+  clip: rect(0,0,0,0);
+  white-space: nowrap;
+  border-width: 0;
+}
+
+/* ─── 21st.dev sterling-gate kinetic nav ──────────────────── */
+
+/* "click me" label */
+.nav-toggle-label { display: flex; align-items: center; }
+.toggle-text {
+  font-family: Georgia, "Times New Roman", serif;
+  font-style: italic;
+  font-size: 1rem;
+  color: inherit;
+  letter-spacing: 0.01em;
+  opacity: 0.75;
+}
+
+/* Menu button — no border, plain text + icon */
+.nav-close-btn {
+  display: flex;
+  align-items: center;
+  gap: 0.55rem;
+  background: none;
+  border: none;
+  padding: 0;
+  color: inherit;
+  cursor: pointer;
+}
+
+.menu-button-text {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  height: 1.15em;
+}
+.menu-button-text .p-large {
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: 1.15rem;
+  letter-spacing: -0.01em;
+  line-height: 1.15;
+  margin: 0;
+  color: inherit;
+}
+
+.icon-wrap { display: flex; align-items: center; }
+.menu-button-icon { width: 19px; height: 19px; display: block; }
+
+/* Overlay wrapper */
+.fullscreen-menu-container { position: static; }
+
+.nav-overlay-wrapper {
+  display: none;
+  position: fixed;
+  inset: 0;
+  z-index: 998;
+}
+
+.overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.35);
+  opacity: 0;
+  cursor: pointer;
+}
+
+/* Sliding panel */
+.menu-content {
+  position: absolute;
+  top: 0; right: 0; bottom: 0;
+  width: min(580px, 92vw);
+  overflow: hidden;
+}
+
+.menu-bg { position: absolute; inset: 0; }
+
+/* Creamy warm backdrop layers */
+.backdrop-layer        { position: absolute; inset: 0; background: #fdf9f3; }
+.backdrop-layer.first  { background: #2d1810; }
+.backdrop-layer.second { background: #c9a882; }
+
+.ambient-background-shapes {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  overflow: hidden;
+}
+.bg-shape {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+}
+.bg-shape.active { opacity: 1; }
+
+.menu-content-wrapper {
+  position: relative;
+  z-index: 2;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  /* vertical padding only — horizontal padding moved to nav-link so bg can go full-width */
+  padding: clamp(3rem, 8vw, 5rem) 0;
+}
+
+/* Break list out of any residual padding so bg goes edge-to-edge */
+.menu-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+.menu-list-item {
+  overflow: hidden;
+  position: relative;
+}
+
+.nav-link {
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+  cursor: pointer;
+  background: transparent;
+  border: none;
+  padding: 0.04em clamp(2.5rem, 6vw, 4.5rem);
+  width: 100%;
+}
+
+/* Clipping wrapper — font-size lives here so height: 1.15em resolves correctly */
+.nav-link-text-wrap {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  font-size: clamp(2.34rem, 5.85vw, 4.5rem);
+  height: 1.15em;
+}
+
+.nav-link-text {
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-weight: 400;
+  font-size: 1em;
+  letter-spacing: -0.01em;
+  line-height: 1.15;
+  margin: 0;
+  flex-shrink: 0;
+}
+/* First copy: dark (rest state) */
+.nav-link-text:first-child { color: #1c1814; }
+/* Second copy: cream (slides in on hover) */
+.nav-link-text:last-child  { color: #f5efe8; }
+
+.nav-link-hover-bg { display: none; }
+
+/* ─── Reduced motion ──────────────────────────────────────── */
+@media (prefers-reduced-motion: reduce) {
+  body::before { animation: none; }
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
