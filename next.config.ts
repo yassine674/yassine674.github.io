@@ -1,21 +1,19 @@
 import type { NextConfig } from "next";
 
-/* yassine674.github.io is a user site served at the root. Expose the same value to
-   the client (NEXT_PUBLIC_BASE_PATH) so the asset() helper can prefix
-   plain <img>/url() references that Next won't rewrite automatically. */
-const basePath = "";
+// GITHUB_PAGES=1 (set by the GitHub workflow) builds a fully static copy for yassine674.github.io;
+// the normal build (Vercel, local) is unchanged.
+const pages = process.env.GITHUB_PAGES === "1";
 
 const nextConfig: NextConfig = {
-  output: "export",
-  basePath,
-  env: {
-    NEXT_PUBLIC_BASE_PATH: basePath,
-  },
-  images: {
-    unoptimized: true,
-    remotePatterns: [
-      { protocol: "https", hostname: "images.unsplash.com" },
-    ],
+  // static export can't use partial prerendering, so the GitHub copy is built without it
+  ...(pages ? { output: "export" as const, trailingSlash: true } : { cacheComponents: true, partialPrefetching: true }),
+  turbopack: {
+    rules: {
+      "*.css": {
+        loaders: ["@tailwindcss/turbopack"],
+        as: "*.css",
+      },
+    },
   },
 };
 

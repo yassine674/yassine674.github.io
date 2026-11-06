@@ -1,53 +1,34 @@
-# Imane MOUMOUN — Portfolio
+# Yassine Moumoun — Portfolio
 
-Personal portfolio of Imane MOUMOUN, AI/ML engineering student at Mines Saint-Étienne → ENS Paris-Saclay.
+Étudiant ingénieur en cybersécurité à l'INSA Hauts-de-France, tourné vers la **défense** : SOC, SIEM/SOAR, réponse à incident, automatisation et IA appliquée à la sécurité.
 
-**Live:** https://yassine674.github.io/imane-portfolio/
+**Voir le portfolio : [yassine674.github.io](https://yassine674.github.io)**
 
----
+Je cherche un **stage de 6 mois à partir de mars 2028** en SOC, cybersécurité ou cloud security.
 
-## Stack
+## Ce qu'on y trouve
 
-- **Next.js 16** — App Router, static export (`output: "export"`)
-- **TypeScript** — strict mode
-- **Tailwind CSS v4** — utility classes + OKLCH design tokens
-- **Framer Motion** — scroll-triggered animations
-- **GSAP** — timeline scrub animations (Experience section)
-- **Resend** — contact form email delivery
+- **Projets** : home lab SIEM Wazuh, lab Active Directory & Splunk, monitoring SOC simulé (LetsDefend), estimateur mémoire LLM, suivi d'objets par YOLO, MediConnect. Chaque projet a sa page : le contexte, comment je l'ai construit, les outils et leur rôle.
+- **Compétences** : SIEM & détection, réponse à incident, Active Directory, sécurité cloud, réseaux, programmation.
+- **Certifications** : TryHackMe SAL1, Hackviser CAPT, Job Simulation Forage, SEC1 en cours.
+- **Parcours** : des classes préparatoires à l'INSA, stages et expériences.
 
-## Setup
+## Technique
+
+Site construit avec **Next.js 16**, **React 19** et **Tailwind CSS 4**, en français et en anglais. Animations en CSS et JavaScript, sans librairie d'animation. Version ordinateur et téléphone.
+
+Aucun serveur ni base de données : toutes les pages sont générées à l'avance.
 
 ```bash
 npm install
 npm run dev      # http://localhost:3000
+npm run build    # version de production
 ```
 
-For the contact form, create `.env.local`:
-```
-RESEND_API_KEY=re_your_key_here
-CONTACT_EMAIL=your@email.com
-```
+## Contact
 
-## Build & Deploy
+- E-mail : [yassine127mn@gmail.com](mailto:yassine127mn@gmail.com)
+- LinkedIn : [yassine-moumoun](https://www.linkedin.com/in/yassine-moumoun)
+- GitHub : [yassine674](https://github.com/yassine674)
 
-```bash
-npm run build    # generates static site in /out
-```
-
-Deployed automatically to GitHub Pages on every push to `main`.
-
-## Structure
-
-```
-src/
-  app/           — layout, page entry, global CSS, favicon, API route
-  components/    — layout/, sections/, ui/
-  lib/           — asset helper, i18n context, translations (EN + FR)
-public/
-  about/         — hero collage images
-  project/       — project card images
-```
-
-All page copy is in `src/lib/translations.ts` — edit there to update any text in either language.
-
-> For Claude Code: see `CLAUDE.md` for full architecture, patterns, and task guides.
+Photos d'illustration libres de droits (CC0 / domaine public), crédits dans `public/img/CREDITS.txt`.

@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1414 1000" width="1414" height="1000">
+<rect width="1414" height="1000" fill="#0b0b0b"/>
+<rect x="40" y="40" width="1334" height="920" fill="none" stroke="#00ff00" stroke-opacity=".5" stroke-width="2"/>
+<rect x="60" y="60" width="1294" height="880" fill="none" stroke="#00ff00" stroke-opacity=".2" stroke-width="1" stroke-dasharray="6 8"/>
+<text x="707" y="230" fill="#00ff00" font-family="monospace" font-size="28" letter-spacing="8" text-anchor="middle">CERTIFICAT TEMPORAIRE</text>
+<text x="707" y="420" fill="#ffffff" font-family="sans-serif" font-weight="700" font-size="64" text-anchor="middle">Security Engineer Level 1</text>
+<text x="707" y="500" fill="#bbbbbb" font-family="monospace" font-size="30" letter-spacing="3" text-anchor="middle">SEC1 · TryHackMe · en cours</text>
+<text x="707" y="620" fill="#ffffff" font-family="sans-serif" font-size="36" text-anchor="middle">Yassine Moumoun</text>
+<line x1="507" y1="650" x2="907" y2="650" stroke="#00ff00" stroke-width="2"/>
+<text x="707" y="860" fill="#777777" font-family="monospace" font-size="22" text-anchor="middle">Le vrai certificat (PDF ou image) remplacera ce fichier : public/certifs/sec1.svg</text>
+</svg>

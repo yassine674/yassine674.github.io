@@ -1,11 +1,5 @@
 # See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
 
-# Reference source — not to be committed
-/pauschal.design/
-/yanliuportfolio.vercel.app/
-dev.log
-*.log
-
 # dependencies
 /node_modules
 /.pnp
@@ -45,3 +39,8 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# personal files that stay on this PC
+/newest version.pdf
+/next-env.d.ts
+/AGENTS.md

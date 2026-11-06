@@ -1,65 +1,53 @@
 import type { Metadata } from "next";
-import { Cormorant_Garamond, Bricolage_Grotesque, Red_Hat_Mono, Dancing_Script, Caveat } from "next/font/google";
+import { Geist, Geist_Mono, Roboto_Condensed, Chakra_Petch } from "next/font/google";
 import "./globals.css";
-import { LanguageProvider } from "@/lib/i18n";
+import "@/components/s1/s1.css";
+import Preloader from "@/components/preloader";
+import SiteChrome from "@/components/chrome";
+import { LangProvider } from "@/components/i18n";
+import { LightboxProvider } from "@/components/lightbox";
 
-const bricolage = Bricolage_Grotesque({
+const geistSans = Geist({
+  variable: "--font-geist-sans",
   subsets: ["latin"],
-  weight: ["400", "500", "600", "700", "800"],
-  variable: "--font-display-var",
-  display: "swap",
 });
 
-const cormorant = Cormorant_Garamond({
+const geistMono = Geist_Mono({
+  variable: "--font-geist-mono",
   subsets: ["latin"],
-  weight: ["300", "400", "500", "600", "700"],
-  style: ["normal", "italic"],
-  variable: "--font-serif-var",
-  display: "swap",
 });
 
-const caveat = Caveat({
+const condensed = Roboto_Condensed({
+  variable: "--font-condensed",
   subsets: ["latin"],
-  weight: ["400", "700"],
-  variable: "--font-handwriting",
-  display: "swap",
+  weight: "700",
 });
 
-const dancingScript = Dancing_Script({
+const display = Chakra_Petch({
+  variable: "--font-display",
   subsets: ["latin"],
-  weight: ["400", "700"],
-  variable: "--font-script",
-  display: "swap",
-});
-
-/* Micro-labels — echoes the mono captions on microsoft.ai */
-const redHatMono = Red_Hat_Mono({
-  subsets: ["latin"],
-  weight: ["400", "500"],
-  variable: "--font-mono-var",
-  display: "swap",
+  weight: "700",
 });
 
 export const metadata: Metadata = {
-  title: "Yassine Moumoun — Portfolio",
-  description:
-    "Portfolio of Yassine MOUMOUN — engineering student in Computer Science & Cybersecurity at INSA Hauts-de-France. Defensive security, SOC operations, SIEM and incident detection.",
-  keywords: ["Cybersecurity", "SOC", "SIEM", "Blue Team", "Wazuh", "Splunk", "Incident Response"],
-  authors: [{ name: "Yassine MOUMOUN", url: "https://github.com/yassine674" }],
-  openGraph: {
-    title: "Yassine Moumoun — Portfolio",
-    description:
-      "Defensive security, SOC operations and incident detection.",
-    type: "website",
-    locale: "en_US",
-  },
-  robots: { index: true, follow: true },
+  title: "Yassine Moumoun — Cybersécurité défensive & Cloud",
+  description: "Portfolio : SOC, SIEM/SOAR, automatisation et IA appliquée à la cybersécurité.",
 };
 
-export default function RootLayout({ children }: { children: React.ReactNode }) {
+export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
-    <html lang="en" className={`${bricolage.variable} ${cormorant.variable} ${redHatMono.variable} ${dancingScript.variable} ${caveat.variable}`}>
-      <body className={`${dancingScript.variable} ${caveat.variable}`}><LanguageProvider>{children}</LanguageProvider></body>
+    <html
+      lang="fr"
+      className={`${geistSans.variable} ${geistMono.variable} ${condensed.variable} ${display.variable} h-full antialiased`}
+    >
+      <body className="min-h-full flex flex-col" suppressHydrationWarning><LangProvider>
+          <LightboxProvider>
+            <Preloader>
+              <SiteChrome />
+              {children}
+            </Preloader>
+          </LightboxProvider>
+        </LangProvider></body>
     </html>
   );
 }
