@@ -2,7 +2,8 @@
 
 Étudiant ingénieur en cybersécurité à l'INSA Hauts-de-France, tourné vers la **défense** : SOC, SIEM/SOAR, réponse à incident, automatisation et IA appliquée à la sécurité.
 
-**Voir le portfolio : [yassine674.github.io](https://yassine674.github.io)**
+**Voir le portfolio : [yassine-moumoun.vercel.app](https://yassine-moumoun.vercel.app)**
+(copie de secours : [yassine674.github.io](https://yassine674.github.io))
 
 Je cherche un **stage de 6 mois à partir de mars 2028** en SOC, cybersécurité ou cloud security.
 

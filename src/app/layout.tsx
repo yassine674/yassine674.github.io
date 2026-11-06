@@ -30,6 +30,8 @@ const display = Chakra_Petch({
 });
 
 export const metadata: Metadata = {
+  // the main address: links in the share preview (LinkedIn, WhatsApp...) point here
+  metadataBase: new URL("https://yassine-moumoun.vercel.app"),
   title: "Yassine Moumoun — Cybersécurité défensive & Cloud",
   description: "Portfolio : SOC, SIEM/SOAR, automatisation et IA appliquée à la cybersécurité.",
 };
