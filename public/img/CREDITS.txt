@@ -13,10 +13,10 @@ Photos (public domain / CC0, via Openverse)
 /img/library.webp — "Library Bookshelf" — CC0 — https://www.flickr.com/photos/29155878@N03/22468805072
 /img/network-cables.webp — "Free networking cables image" — CC0 — https://www.rawpixel.com/image/5919227/image-background-public-domain-technology
 /img/monitoring-room.webp — "Technician monitoring room at NERSC data center (1)" — CC0 — https://www.flickr.com/photos/29507259@N02/6271720416
-/img/together.webp — "Friends Hugging" — CC0 — https://stocksnap.io/photo/friends-hugging-6ZYX4YY4IR
 /img/sky-cloud.webp — "Blue sky clouds" — CC0 — https://www.rawpixel.com/image/5908034/photo-image-background-cloud-public-domain
 /img/server-room.webp — "Server racks and technician at NERSC" — CC0 — https://www.flickr.com/photos/29507259@N02/6271678248
 /img/switch.webp — "Network switch" — CC0 — https://www.flickr.com/photos/182866455@N04/49617101381
 /img/python-code.webp — "Python Source Code" — CC0 — https://www.flickr.com/photos/47121680@N00/44661017890
 /img/operations-center.webp — "Network Operations Center" — CC0 — https://www.flickr.com/photos/37996646802@N01/537486932
 /img/supervision-wall.webp — "Citytv Breakfast Television control room - Roland in Vancouver 879.jpg" — CC0 — https://www.flickr.com/photos/35034347371@N01/110120144
+/img/team-meeting.webp — "Business People" — CC0 — https://stocksnap.io/photo/business-people-IS1XRUWYW4
