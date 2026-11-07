@@ -13,6 +13,26 @@ import { useIntro } from "@/components/intro-context"
 const Shown = createContext(false)
 export const useShown = () => useContext(Shown)
 
+/**
+ * Keeps data-vis="true" / "false" on the element while it is on / off screen.
+ * CSS pauses every endless animation inside an element that is off screen, so the browser never redraws what nobody sees.
+ */
+export function useVisAttr(ref: React.RefObject<HTMLElement | null>) {
+  useEffect(() => {
+    const el = ref.current
+    if (!el) return
+    // ratio > 0: an element only touching the edge of the screen counts as off screen
+    const io = new IntersectionObserver(
+      ([e]) => {
+        el.dataset.vis = String(e.isIntersecting && e.intersectionRatio > 0)
+      },
+      { threshold: [0, 0.01] },
+    )
+    io.observe(el)
+    return () => io.disconnect()
+  }, [ref])
+}
+
 export function S1Section({
   children,
   className,
@@ -31,6 +51,7 @@ export function S1Section({
   const ref = useRef<HTMLElement>(null)
   const { revealed } = useIntro()
   const [shown, setShown] = useState(false)
+  useVisAttr(ref)
   useEffect(() => {
     const el = ref.current
     if (!el || !revealed || shown) return

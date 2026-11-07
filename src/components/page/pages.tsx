@@ -15,21 +15,22 @@ import { GlitchWord, LineTitle, PreTitle, S1Section, S1Text } from "@/components
 // Openings of the menu pages: number, lead sentence, picture, and the words of the band that slides under it.
 const HERO = {
   fr: {
-    about: { num: "01", lead: "Étudiant ingénieur en cybersécurité, tourné vers la défense.", media: "/img/keyboard.webp", words: ["Blue team", "SOC", "Défense", "Cloud", "Automatisation"] },
-    skills: { num: "03", lead: "Ce que je sais faire, outil par outil.", media: "/img/code.webp", words: ["SIEM", "SOAR", "Active Directory", "Cloud", "Python", "IA"] },
-    path: { num: "04", lead: "Des classes prépa au SOC, étape par étape.", media: "/img/servers.webp", words: ["Prépa MP", "INSA", "LAMIH", "Forage", "Hackviser"] },
-    contact: { num: "05", lead: "Un stage SOC ou cloud security ? Écrivons-nous.", media: "/img/lock.webp", words: ["Stage", "Mars 2028", "6 mois", "SOC", "Cloud security"] },
+    about: { num: "01", lead: "Étudiant ingénieur en cybersécurité, tourné vers la défense.", media: "/img/laptop-dark.webp", words: ["Blue team", "SOC", "Défense", "Cloud", "Automatisation"] },
+    skills: { num: "03", lead: "Ce que je sais faire, outil par outil.", media: "/img/code-screen.webp", words: ["SIEM", "SOAR", "Active Directory", "Cloud", "Python", "IA"] },
+    path: { num: "04", lead: "Des classes prépa au SOC, étape par étape.", media: "/img/library.webp", words: ["Prépa MP", "INSA", "LAMIH", "Forage", "Hackviser"] },
+    contact: { num: "05", lead: "Un stage SOC ou cloud security ? Écrivons-nous.", media: "/img/phone.webp", words: ["Stage", "Mars 2028", "6 mois", "SOC", "Cloud security"] },
   },
   en: {
-    about: { num: "01", lead: "Cybersecurity engineering student, focused on defense.", media: "/img/keyboard.webp", words: ["Blue team", "SOC", "Defense", "Cloud", "Automation"] },
-    skills: { num: "03", lead: "What I can do, tool by tool.", media: "/img/code.webp", words: ["SIEM", "SOAR", "Active Directory", "Cloud", "Python", "AI"] },
-    path: { num: "04", lead: "From prep school to the SOC, step by step.", media: "/img/servers.webp", words: ["Prep school", "INSA", "LAMIH", "Forage", "Hackviser"] },
-    contact: { num: "05", lead: "A SOC or cloud security internship? Let's talk.", media: "/img/lock.webp", words: ["Internship", "March 2028", "6 months", "SOC", "Cloud security"] },
+    about: { num: "01", lead: "Cybersecurity engineering student, focused on defense.", media: "/img/laptop-dark.webp", words: ["Blue team", "SOC", "Defense", "Cloud", "Automation"] },
+    skills: { num: "03", lead: "What I can do, tool by tool.", media: "/img/code-screen.webp", words: ["SIEM", "SOAR", "Active Directory", "Cloud", "Python", "AI"] },
+    path: { num: "04", lead: "From prep school to the SOC, step by step.", media: "/img/library.webp", words: ["Prep school", "INSA", "LAMIH", "Forage", "Hackviser"] },
+    contact: { num: "05", lead: "A SOC or cloud security internship? Let's talk.", media: "/img/phone.webp", words: ["Internship", "March 2028", "6 months", "SOC", "Cloud security"] },
   },
 }
 
 // pictures that follow the cursor over the skills rows (same order as the rows)
-const ROW_PICS = ["/projets/siem-wazuh.webp", "/projets/soc-letsdefend.webp", "/projets/ad-splunk.webp", "/img/servers.webp", "/img/lock.webp", "/projets/yolo-tracking.webp"]
+// one picture per skill row (SIEM, incident response, Active Directory, cloud, networks, code)
+const ROW_PICS = ["/img/logs.webp", "/img/alert.webp", "/img/circuit-dark.webp", "/img/clouds.webp", "/img/ethernet.webp", "/img/chip.webp"]
 
 export function AboutPage() {
   const start = usePageStart()
@@ -72,7 +73,7 @@ export function AboutPage() {
           </div>
         </S1Section>
 
-        <ImageBand src="/img/servers.webp" caption={lang === "fr" ? "Superviser, corréler, répondre" : "Monitor, correlate, respond"} />
+        <ImageBand src="/img/network-cables.webp" caption={lang === "fr" ? "Superviser, corréler, répondre" : "Monitor, correlate, respond"} />
 
         <S1Section className="blk">
           <PreTitle>{a.now.label}</PreTitle>
@@ -324,14 +325,22 @@ function TimelineLine() {
     const line = el.current
     const list = line?.nextElementSibling as HTMLElement | null
     if (!line || !list) return
-    const on = () => {
+    let raf = 0
+    const update = () => {
+      raf = 0
       const r = list.getBoundingClientRect()
       const k = Math.min(1, Math.max(0, (window.innerHeight * 0.75 - r.top) / r.height))
       line.style.setProperty("--k", String(k))
     }
-    on()
+    const on = () => {
+      if (!raf) raf = requestAnimationFrame(update)
+    }
+    update()
     window.addEventListener("scroll", on, { passive: true })
-    return () => window.removeEventListener("scroll", on)
+    return () => {
+      window.removeEventListener("scroll", on)
+      cancelAnimationFrame(raf)
+    }
   }, [])
   return <span ref={el} className="tl__line" aria-hidden />
 }

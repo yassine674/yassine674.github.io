@@ -131,6 +131,11 @@ export default function ProjectsPanel() {
       to = -index * (W + GAP)
       tweenAt = performance.now()
       setCurrent(mod(index, n))
+      wake()
+    }
+    // the loop only runs while something moves; a still strip costs nothing
+    const wake = () => {
+      if (!raf) raf = requestAnimationFrame(frame)
     }
 
     const frame = (now: number) => {
@@ -166,13 +171,21 @@ export default function ProjectsPanel() {
         shownAssign = nextAssign.join()
         setAssign(nextAssign)
       }
+      if (shown && k >= 1) {
+        raf = 0 // settled: sleep until the next move
+        return
+      }
       raf = requestAnimationFrame(frame)
     }
     raf = requestAnimationFrame(frame)
-    window.addEventListener("resize", resize)
+    const onResize = () => {
+      resize()
+      wake()
+    }
+    window.addEventListener("resize", onResize)
     return () => {
       cancelAnimationFrame(raf)
-      window.removeEventListener("resize", resize)
+      window.removeEventListener("resize", onResize)
     }
   }, [start, n])
 

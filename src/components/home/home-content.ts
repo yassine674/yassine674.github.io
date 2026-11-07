@@ -48,7 +48,7 @@ const fr = {
     perfect: "précision",
   },
   ways: [
-    { label: "Blue team · SOC", title: "Défense", href: "/competences", btn: "Compétences", media: "/projets/soc-letsdefend.webp" },
+    { label: "Blue team · SOC", title: "Défense", href: "/competences", btn: "Compétences", media: "/img/monitoring-room.webp" },
     { label: "Labs · IA", title: "Projets", href: "/projets", btn: "Voir les projets", media: "/img/code.webp" },
   ],
   tools: {
@@ -127,7 +127,7 @@ const en: Dict = {
     perfect: "precision",
   },
   ways: [
-    { label: "Blue team · SOC", title: "Defense", href: "/competences", btn: "Skills", media: "/projets/soc-letsdefend.webp" },
+    { label: "Blue team · SOC", title: "Defense", href: "/competences", btn: "Skills", media: "/img/monitoring-room.webp" },
     { label: "Labs · AI", title: "Projects", href: "/projets", btn: "See the projects", media: "/img/code.webp" },
   ],
   tools: {

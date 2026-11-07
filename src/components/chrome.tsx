@@ -88,14 +88,24 @@ export default function SiteChrome() {
       })
       setInvert(light)
     }
+    // at most one check per frame, after the scroll has been applied (reading positions never forces an extra layout)
+    let raf = 0
+    const onScroll = () => {
+      if (!raf)
+        raf = requestAnimationFrame(() => {
+          raf = 0
+          check()
+        })
+    }
     check()
-    window.addEventListener("scroll", check, { passive: true })
-    window.addEventListener("resize", check)
-    const id = setInterval(check, 500) // page changes without a scroll event
+    window.addEventListener("scroll", onScroll, { passive: true })
+    window.addEventListener("resize", onScroll)
+    const id = setInterval(check, 1000) // page changes without a scroll event
     return () => {
-      window.removeEventListener("scroll", check)
-      window.removeEventListener("resize", check)
+      window.removeEventListener("scroll", onScroll)
+      window.removeEventListener("resize", onScroll)
       clearInterval(id)
+      cancelAnimationFrame(raf)
     }
   }, [])
 

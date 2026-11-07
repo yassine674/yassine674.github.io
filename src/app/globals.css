@@ -306,7 +306,7 @@ body {
   inset: 0;
   background: #fff;
   transform-origin: 0 0;
-  animation: scroll-line 3.5s cubic-bezier(0.25, 0, 0.25, 1) infinite;
+  animation: scroll-line 3.5s cubic-bezier(0.25, 0, 0.25, 1) 4;
 }
 @keyframes scroll-line {
   0% { transform: scaleY(0); transform-origin: 0 0; }

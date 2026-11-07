@@ -5,7 +5,7 @@ import { useEffect, useRef, useState } from "react"
 import { usePathname } from "next/navigation"
 import { MENU_HREFS, useLang } from "@/components/i18n"
 import BigTitle from "./big-title"
-import { LineTitle, S1Section } from "@/components/s1/s1"
+import { LineTitle, S1Section, useVisAttr } from "@/components/s1/s1"
 import { useIntro } from "@/components/intro-context"
 import RollLink from "@/components/hero/roll-link"
 import { GITHUB, LINKEDIN, PAGES } from "./content"
@@ -232,8 +232,10 @@ export function Arrow() {
  */
 export function PageHero({ num, title, lead, media, start }: { num: string; title: string; lead: string; media: string; start: number | null }) {
   const on = start != null
+  const ref = useRef<HTMLElement>(null)
+  useVisAttr(ref)
   return (
-    <header className="phero" data-on={on}>
+    <header ref={ref} className="phero" data-on={on}>
       <div className="phero__pic" aria-hidden>
         {/* eslint-disable-next-line @next/next/no-img-element -- full-screen background, animated by CSS */}
         <img src={media} alt="" />
@@ -267,8 +269,10 @@ export function PageHero({ num, title, lead, media, start }: { num: string; titl
 /** Giant outlined words that slide sideways forever (two copies, so the loop never shows a gap). */
 export function Marquee({ words }: { words: string[] }) {
   const line = words.join("  ·  ") + "  ·  "
+  const ref = useRef<HTMLDivElement>(null)
+  useVisAttr(ref)
   return (
-    <div className="mq" aria-hidden>
+    <div ref={ref} className="mq" aria-hidden>
       <div className="mq__track">
         <span>{line}</span>
         <span>{line}</span>

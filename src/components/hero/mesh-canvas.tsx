@@ -362,7 +362,43 @@ export default function MeshCanvas({ className }: { className?: string }) {
       return g
     }
 
+    // Glowing dots: a blurred shadow per dot, every frame, is the slowest thing a canvas can do.
+    // Each kind of dot (colour, size, glow) is drawn once into a small sprite, then only copied: same picture, far less work.
+    const sprites = new Map<string, { c: HTMLCanvasElement; pad: number }>()
+    const glowDot = (x: number, y: number, r: number, blur: number, rgb: string, shadowA: number, alpha: number) => {
+      if (alpha <= 0.003) return
+      const rq = Math.round(r * 8) / 8
+      const bq = Math.round(blur * 2) / 2
+      const dpr = canvas.width / w || 1
+      const key = `${rgb}|${rq}|${bq}|${shadowA}|${dpr}`
+      let s = sprites.get(key)
+      if (!s) {
+        const pad = Math.ceil(rq + bq * 1.5 + 2)
+        const c = document.createElement("canvas")
+        c.width = c.height = Math.ceil(pad * 2 * dpr)
+        const g = c.getContext("2d")!
+        g.setTransform(dpr, 0, 0, dpr, 0, 0)
+        g.fillStyle = `rgb(${rgb})`
+        g.shadowColor = `rgba(${rgb},${shadowA})`
+        g.shadowBlur = bq
+        g.beginPath()
+        g.arc(pad, pad, rq, 0, Math.PI * 2)
+        g.fill()
+        s = { c, pad }
+        sprites.set(key, s)
+      }
+      ctx.globalAlpha = Math.min(1, alpha)
+      ctx.drawImage(s.c, x - s.pad, y - s.pad, s.pad * 2, s.pad * 2)
+      ctx.globalAlpha = 1
+    }
+
+    // the hero stays pinned under the page (sticky): once the next sections cover it, stop drawing
+    const covered = () => window.scrollY > window.innerHeight + 40
     const draw = (now: number) => {
+      if (covered()) {
+        raf = 0
+        return
+      }
       raf = requestAnimationFrame(draw)
       const dt = Math.min((now - last) / 16.7 || 1, 3)
       last = now
@@ -774,45 +810,22 @@ export default function MeshCanvas({ className }: { className?: string }) {
         if (p.g > 0.4 || (built >= 1 && pulsing.has(i))) {
           const pulse = still ? 1 : 0.6 + 0.4 * Math.sin(now / 420 + i)
           const k = p.g > 0.4 ? 0.3 + 0.5 * p.g : 0.3 + 0.6 * pulse
-          ctx.fillStyle = `rgba(${GREEN},${(k * p.prog).toFixed(3)})`
-          ctx.shadowColor = `rgba(${GREEN},0.9)`
-          ctx.shadowBlur = 4 + 6 * Math.max(p.g, pulsing.has(i) ? pulse * 0.5 : 0)
-          ctx.beginPath()
-          ctx.arc(p.x, p.y, 1.4 + 1.2 * p.g, 0, Math.PI * 2)
-          ctx.fill()
-          ctx.shadowBlur = 0
+          glowDot(p.x, p.y, 1.4 + 1.2 * p.g, 4 + 6 * Math.max(p.g, pulsing.has(i) ? pulse * 0.5 : 0), GREEN, 0.9, k * p.prog)
         } else {
           const l = mesh.light[i]
           if (kind === SPARK) {
             // a loose green spark twinkling in the air
             const tw = still ? 1 : 0.5 + 0.5 * Math.sin(now / 700 + i * 1.9)
-            ctx.fillStyle = `rgba(${GREEN},${((0.35 + 0.5 * tw) * p.prog).toFixed(3)})`
-            ctx.shadowColor = `rgba(${GREEN},0.9)`
-            ctx.shadowBlur = 6 + 10 * neon
-            ctx.beginPath()
-            ctx.arc(p.x, p.y, 1.3 + 1.2 * neon, 0, Math.PI * 2)
-            ctx.fill()
-            ctx.shadowBlur = 0
+            glowDot(p.x, p.y, 1.3 + 1.2 * neon, 6 + 10 * neon, GREEN, 0.9, (0.35 + 0.5 * tw) * p.prog)
           } else if (mesh.green[i] > 0.35) {
             // the lit green rim of the hood
-            ctx.fillStyle = `rgba(${GREEN},${((0.5 + 0.4 * mesh.green[i]) * p.prog).toFixed(3)})`
-            ctx.shadowColor = `rgba(${GREEN},0.8)`
-            ctx.shadowBlur = hood ? 8 : 2
-            ctx.beginPath()
-            ctx.arc(p.x, p.y, hood ? Math.min(1.5, Math.max(0.9, maskData.nodes[i][4] * 0.1 * size * 0.9)) : 0.9, 0, Math.PI * 2)
-            ctx.fill()
-            ctx.shadowBlur = 0
+            const r = hood ? Math.min(1.5, Math.max(0.9, maskData.nodes[i][4] * 0.1 * size * 0.9)) : 0.9
+            glowDot(p.x, p.y, r, hood ? 8 : 2, GREEN, 0.8, (0.5 + 0.4 * mesh.green[i]) * p.prog)
           } else {
             // the nodes are what draws the picture: clear white dots, brightest along the outline of the mask and the hood
             const alpha = (hood ? 0.55 + 0.4 * l : 0.7 + 0.3 * l) * (hood ? 1 - 0.45 * neon : 1)
             const dotR = Math.min(2.2, Math.max(0.7, maskData.nodes[i][4] * 0.1 * size * 1.15)) // the size of the dot in the picture
-            ctx.fillStyle = `rgba(255,255,255,${(alpha * p.prog).toFixed(3)})`
-            ctx.shadowColor = "rgba(255,255,255,0.7)"
-            ctx.shadowBlur = dotR > 1.3 ? 5 : 0
-            ctx.beginPath()
-            ctx.arc(p.x, p.y, dotR, 0, Math.PI * 2)
-            ctx.fill()
-            ctx.shadowBlur = 0
+            glowDot(p.x, p.y, dotR, dotR > 1.3 ? 5 : 0, "255,255,255", 0.7, alpha * p.prog)
           }
         }
       }
@@ -911,9 +924,18 @@ export default function MeshCanvas({ className }: { className?: string }) {
     document.addEventListener("pointerleave", onLeave)
     const onVis = () => {
       cancelAnimationFrame(raf)
-      if (!document.hidden) raf = requestAnimationFrame(draw)
+      raf = 0
+      if (!document.hidden && !covered()) raf = requestAnimationFrame(draw)
     }
     document.addEventListener("visibilitychange", onVis)
+    // back in view: start drawing again
+    const onScroll = () => {
+      if (!raf && !document.hidden && !covered()) {
+        last = performance.now()
+        raf = requestAnimationFrame(draw)
+      }
+    }
+    window.addEventListener("scroll", onScroll, { passive: true })
     return () => {
       cancelAnimationFrame(raf)
       ro.disconnect()
@@ -921,6 +943,7 @@ export default function MeshCanvas({ className }: { className?: string }) {
       window.removeEventListener("pointerdown", onDown)
       document.removeEventListener("pointerleave", onLeave)
       document.removeEventListener("visibilitychange", onVis)
+      window.removeEventListener("scroll", onScroll)
     }
   }, [])
 

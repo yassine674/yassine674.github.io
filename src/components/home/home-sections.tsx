@@ -250,25 +250,31 @@ function TwoWays({ h }: { h: H }) {
 function Features({ h }: { h: H }) {
   const box = useRef<HTMLElement>(null)
   const [idx, setIdx] = useState(-1)
-  const [prog, setProg] = useState(0)
+  const bar = useRef<HTMLElement>(null)
   const n = h.features.slides.length
   useEffect(() => {
     const el = box.current
     if (!el) return
-    const on = () => {
+    const update = () => {
+      raf = 0
       const r = el.getBoundingClientRect()
       const span = r.height - window.innerHeight
       const k = Math.min(1, Math.max(0, -r.top / span))
-      setProg(k)
+      if (bar.current) bar.current.style.transform = `scaleY(${k})`
       // the first statement comes in as soon as the screen covers most of the hero
       setIdx(r.top > window.innerHeight * 0.45 ? -1 : Math.min(n - 1, Math.floor(k * n)))
     }
-    on()
+    let raf = 0
+    const on = () => {
+      if (!raf) raf = requestAnimationFrame(update)
+    }
+    update()
     window.addEventListener("scroll", on, { passive: true })
     window.addEventListener("resize", on)
     return () => {
       window.removeEventListener("scroll", on)
       window.removeEventListener("resize", on)
+      cancelAnimationFrame(raf)
     }
   }, [n])
 
@@ -298,7 +304,7 @@ function Features({ h }: { h: H }) {
               {String(i + 1).padStart(2, "0")}
             </span>
           ))}
-          <i style={{ transform: `scaleY(${prog})` }} />
+          <i ref={bar} style={{ transform: "scaleY(0)" }} />
         </div>
         <a href="#suite-white" className="s1-feat__skip hud">
           {h.features.skip}

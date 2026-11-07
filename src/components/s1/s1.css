@@ -498,8 +498,9 @@ html:has(.home) { scroll-behavior: smooth; }
 .s1-feat__skip:hover { opacity: 1; }
 
 /* two ways: both halves now carry a picture that drifts slowly */
+/* slow drift on `translate` (handled by the graphics card), not object-position (which repaints the picture every frame) */
 .s1-ways__bg img { animation: s1-drift 18s ease-in-out infinite alternate; }
-@keyframes s1-drift { from { object-position: 40% 50%; } to { object-position: 60% 50%; } }
+@keyframes s1-drift { from { translate: -2% 0; } to { translate: 2% 0; } }
 
 @media (max-width: 767px) {
   .s1-feat__pic { width: 100%; }
@@ -600,7 +601,7 @@ button.s1-awards__ico { width: 100%; padding: 0; background: none; color: inheri
 .prj__cover-pic { position: absolute; inset: 0; }
 .prj__cover-pic::after { content: ""; position: absolute; inset: 0; background: radial-gradient(ellipse at center, rgba(0, 0, 0, 0.55), rgba(0, 0, 0, 0.85)); }
 .prj__cover-pic img { width: 100%; height: 100%; object-fit: cover; transform: scale(1.2); filter: grayscale(0.4); transition: transform 2.4s var(--p4o); }
-.prj__cover[data-ready="true"] .prj__cover-pic img { transform: scale(1.03); animation: s1-drift 20s ease-in-out 2.4s infinite alternate; }
+.prj__cover[data-ready="true"] .prj__cover-pic img { transform: scale(1.06); animation: s1-drift 20s ease-in-out 2.4s infinite alternate; }
 .prj__cover-in { position: relative; z-index: 1; width: min(1000px, calc(100% - 40px)); text-align: center; background: transparent !important; }
 .prj__kind { margin: 0 0 26px; overflow: hidden; color: var(--signal); }
 .prj__kind span { display: inline-block; transform: translateY(-110%); transition: transform 0.5s var(--p1o); }
@@ -954,3 +955,9 @@ body:has(.preloader:not([data-leaving="true"])) main { visibility: hidden; }
 
 /* phone menu: the vertical numbers sit inside the screen, not half off its left edge */
 @media (max-width: 999px) { .menu__num { left: 18px; } }
+
+/* ---------- performance: endless animations stop while their block is off screen ---------- */
+[data-vis="false"],
+[data-vis="false"] * { animation-play-state: paused !important; }
+/* the "scroll" cues beat a few times when the page opens, then rest */
+.prj__down span, .phero__down i { animation-iteration-count: 5 !important; }

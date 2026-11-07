@@ -5,7 +5,8 @@ import { useLang } from "@/components/i18n"
 import { useIntro } from "@/components/intro-context"
 import { useLightbox } from "@/components/lightbox"
 import BrandLogo, { hasLogo } from "@/components/brand-logo"
-import { ActionBtn, LineTitle, PreTitle, S1Section, S1Text, VLines } from "@/components/s1/s1"
+import { useRef } from "react"
+import { ActionBtn, LineTitle, PreTitle, S1Section, S1Text, VLines, useVisAttr } from "@/components/s1/s1"
 import { DETAILS } from "./project-details"
 import { PROJECTS } from "./projects-data"
 
@@ -18,6 +19,8 @@ export default function ProjectPage({ slug }: { slug: string }) {
   const { lang } = useLang()
   const { revealed } = useIntro()
   const open = useLightbox()
+  const cover = useRef<HTMLElement>(null)
+  useVisAttr(cover)
   const i = PROJECTS.findIndex((p) => p.slug === slug)
   const p = PROJECTS[i]
   const d = DETAILS[slug]
@@ -28,7 +31,7 @@ export default function ProjectPage({ slug }: { slug: string }) {
   return (
     <article className="prj">
       {/* cover: the picture fills the screen, the name sits in the middle */}
-      <header className="prj__cover" data-ready={revealed}>
+      <header ref={cover} className="prj__cover" data-ready={revealed}>
         <div className="prj__cover-pic" aria-hidden>
           {p.media && (
             // eslint-disable-next-line @next/next/no-img-element -- full-screen cover, zoomed by CSS

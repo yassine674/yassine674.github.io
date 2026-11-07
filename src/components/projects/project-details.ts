@@ -18,7 +18,6 @@ export type Detail = {
 }
 
 const soon: T = { fr: "Capture à venir", en: "Screenshot coming" }
-const illus: T = { fr: "Illustration", en: "Illustration" }
 
 export const DETAILS: Record<string, Detail> = {
   "siem-wazuh": {
@@ -70,7 +69,7 @@ export const DETAILS: Record<string, Detail> = {
       fr: "Aujourd'hui j'ai un environnement de supervision qui tourne : je peux y rejouer des scénarios d'attaque et vérifier qu'ils sont bien détectés.",
       en: "Today I have a working monitoring environment: I can replay attack scenarios in it and check that they are detected.",
     },
-    shots: [{ src: "/projets/siem-wazuh.webp", caption: illus }, { caption: soon }, { caption: soon }],
+    shots: [{ caption: soon }, { caption: soon }],
     github: GITHUB,
   },
   "ad-splunk": {
@@ -122,7 +121,7 @@ export const DETAILS: Record<string, Detail> = {
       fr: "J'ai maintenant une idée concrète de ce qu'une attaque Active Directory laisse dans les logs, et des recherches Splunk prêtes pour la repérer.",
       en: "I now have a concrete idea of what an Active Directory attack leaves in the logs, and Splunk searches ready to spot it.",
     },
-    shots: [{ src: "/projets/ad-splunk.webp", caption: illus }, { caption: soon }, { caption: soon }],
+    shots: [{ caption: soon }, { caption: soon }],
     github: GITHUB,
   },
   "llm-memory": {
@@ -174,7 +173,7 @@ export const DETAILS: Record<string, Detail> = {
       fr: "Un outil qui donne la mémoire réellement nécessaire avant de déployer un modèle, au lieu de la deviner.",
       en: "A tool that gives the memory actually needed before deploying a model, instead of guessing it.",
     },
-    shots: [{ src: "/projets/llm-memory.webp", caption: illus }, { caption: soon }, { caption: soon }],
+    shots: [{ caption: soon }, { caption: soon }],
     github: GITHUB,
   },
   "soc-letsdefend": {
@@ -226,7 +225,7 @@ export const DETAILS: Record<string, Detail> = {
       fr: "Une méthode d'analyse rodée sur des alertes réelles, que j'ai réutilisée ensuite dans la simulation SOC de la Commonwealth Bank.",
       en: "An analysis method practised on real alerts, which I then used again in the Commonwealth Bank SOC simulation.",
     },
-    shots: [{ src: "/projets/soc-letsdefend.webp", caption: illus }, { caption: soon }, { caption: soon }],
+    shots: [{ caption: soon }, { caption: soon }],
     github: GITHUB,
   },
   "yolo-tracking": {
@@ -270,7 +269,7 @@ export const DETAILS: Record<string, Detail> = {
       fr: "Un suivi du ballon en temps réel, et surtout une vraie compréhension de toute la chaîne d'un projet de vision : données, entraînement, détection.",
       en: "Real-time ball tracking, and above all a real grasp of the whole pipeline of a vision project: data, training, detection.",
     },
-    shots: [{ src: "/projets/yolo-tracking.webp", caption: illus }, { caption: soon }, { caption: soon }],
+    shots: [{ caption: soon }, { caption: soon }],
     github: GITHUB,
   },
   mediconnect: {
@@ -315,7 +314,7 @@ export const DETAILS: Record<string, Detail> = {
       fr: "Une application qui traite des données sensibles en appliquant les bonnes pratiques de sécurité, du login jusqu'à la base de données.",
       en: "An app that handles sensitive data with security best practices, from login to database.",
     },
-    shots: [{ src: "/projets/mediconnect.webp", caption: illus }, { caption: soon }, { caption: soon }],
+    shots: [{ caption: soon }, { caption: soon }],
     github: GITHUB,
   },
 }
