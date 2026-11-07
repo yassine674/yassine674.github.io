@@ -338,7 +338,7 @@ export function Collab({ href, label }: { href: string; label: { fr: string; en:
     <S1Section className="collab" theme="dark">
       <div className="collab__pic" aria-hidden>
         {/* eslint-disable-next-line @next/next/no-img-element -- full-screen background, animated by CSS */}
-        <img src="/img/team-meeting.webp" alt="" loading="lazy" />
+        <img src="/img/glass-facade.webp" alt="" loading="lazy" />
       </div>
       <div className="collab__in">
         <div className="collab__head">
