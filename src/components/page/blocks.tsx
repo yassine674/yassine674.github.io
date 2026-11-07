@@ -313,3 +313,50 @@ export function ImageBand({ src, caption }: { src: string; caption?: string }) {
     </S1Section>
   )
 }
+
+const COLLAB = {
+  fr: {
+    title: "Travaillons ensemble",
+    text: "Je crois que la sécurité se construit en équipe : à plusieurs, on détecte mieux et on répond plus vite. Si vous cherchez un stagiaire SOC curieux et motivé, parlons-en.",
+    see: "Voir",
+  },
+  en: {
+    title: "Let's work together",
+    text: "I believe security is built as a team: together we detect better and respond faster. If you're looking for a curious, motivated SOC intern, let's talk.",
+    see: "See",
+  },
+}
+
+/**
+ * "Let's work together": a full-screen photo of a team, darkened, with a huge title, a sentence and one link
+ * (end of the home page and the contact page).
+ */
+export function Collab({ href, label }: { href: string; label: { fr: string; en: string } }) {
+  const { lang } = useLang()
+  const c = COLLAB[lang]
+  return (
+    <S1Section className="collab" theme="dark">
+      <div className="collab__pic" aria-hidden>
+        {/* eslint-disable-next-line @next/next/no-img-element -- full-screen background, animated by CSS */}
+        <img src="/img/together.webp" alt="" loading="lazy" />
+      </div>
+      <div className="collab__in">
+        <div className="collab__head">
+          <LineTitle as="h2" className="collab__title">
+            {c.title}
+          </LineTitle>
+          <svg className="collab__icon" viewBox="0 0 24 24" aria-hidden>
+            <path d="M5 19 L19 5 M8 5 H19 V16" />
+          </svg>
+        </div>
+        <p className="collab__text">{c.text}</p>
+        <p className="collab__see">
+          {c.see}{" "}
+          <Link href={href} className="collab__link">
+            {label[lang]}
+          </Link>
+        </p>
+      </div>
+    </S1Section>
+  )
+}

@@ -18,19 +18,19 @@ const HERO = {
     about: { num: "01", lead: "Étudiant ingénieur en cybersécurité, tourné vers la défense.", media: "/img/laptop-dark.webp", words: ["Blue team", "SOC", "Défense", "Cloud", "Automatisation"] },
     skills: { num: "03", lead: "Ce que je sais faire, outil par outil.", media: "/img/code-screen.webp", words: ["SIEM", "SOAR", "Active Directory", "Cloud", "Python", "IA"] },
     path: { num: "04", lead: "Des classes prépa au SOC, étape par étape.", media: "/img/library.webp", words: ["Prépa MP", "INSA", "LAMIH", "Forage", "Hackviser"] },
-    contact: { num: "05", lead: "Un stage SOC ou cloud security ? Écrivons-nous.", media: "/img/phone.webp", words: ["Stage", "Mars 2028", "6 mois", "SOC", "Cloud security"] },
+    contact: { num: "05", lead: "Un stage SOC ou cloud security ? Écrivons-nous.", media: "/img/together.webp", words: ["Stage", "Mars 2028", "6 mois", "SOC", "Cloud security"] },
   },
   en: {
     about: { num: "01", lead: "Cybersecurity engineering student, focused on defense.", media: "/img/laptop-dark.webp", words: ["Blue team", "SOC", "Defense", "Cloud", "Automation"] },
     skills: { num: "03", lead: "What I can do, tool by tool.", media: "/img/code-screen.webp", words: ["SIEM", "SOAR", "Active Directory", "Cloud", "Python", "AI"] },
     path: { num: "04", lead: "From prep school to the SOC, step by step.", media: "/img/library.webp", words: ["Prep school", "INSA", "LAMIH", "Forage", "Hackviser"] },
-    contact: { num: "05", lead: "A SOC or cloud security internship? Let's talk.", media: "/img/phone.webp", words: ["Internship", "March 2028", "6 months", "SOC", "Cloud security"] },
+    contact: { num: "05", lead: "A SOC or cloud security internship? Let's talk.", media: "/img/together.webp", words: ["Internship", "March 2028", "6 months", "SOC", "Cloud security"] },
   },
 }
 
 // pictures that follow the cursor over the skills rows (same order as the rows)
 // one picture per skill row (SIEM, incident response, Active Directory, cloud, networks, code)
-const ROW_PICS = ["/img/logs.webp", "/img/alert.webp", "/img/circuit-dark.webp", "/img/clouds.webp", "/img/ethernet.webp", "/img/chip.webp"]
+const ROW_PICS = ["/img/supervision-wall.webp", "/img/operations-center.webp", "/img/server-room.webp", "/img/sky-cloud.webp", "/img/switch.webp", "/img/python-code.webp"]
 
 export function AboutPage() {
   const start = usePageStart()

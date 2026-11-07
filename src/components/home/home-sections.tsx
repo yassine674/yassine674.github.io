@@ -5,6 +5,7 @@ import { useCallback, useEffect, useRef, useState } from "react"
 import { useLang } from "@/components/i18n"
 import RollLink from "@/components/hero/roll-link"
 import { GITHUB, LINKEDIN } from "@/components/page/content"
+import { Collab } from "@/components/page/blocks"
 import { PROJECTS } from "@/components/projects/projects-data"
 import { ActionBtn, Columns, Count, GlitchWord, LineTitle, PreTitle, S1Section, S1Text, VLines } from "@/components/s1/s1"
 import { HOME } from "./home-content"
@@ -60,6 +61,8 @@ export default function HomeSections() {
           </div>
         </div>
       </S1Section>
+
+      <Collab href="/parcours" label={{ fr: "mon parcours", en: "my path" }} />
 
       <S1Section theme="dark" className="s1-contacts" label={t.items[5]}>
         <VLines />
